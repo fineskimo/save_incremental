@@ -6,7 +6,7 @@ bl_info = {
     "name": "Save Incremental",
     "description": 'Save your file with an incremental suffix',
     "author": "Lapineige, Fin",
-    "version": (1, 8, 2),
+    "version": (1, 8, 3),
     "blender": (2, 80, 0),
     "location": "File > Save Incremental",
     "warning": "",
@@ -52,6 +52,7 @@ def detect_number(name):
 class FileIncrementalSave(bpy.types.Operator):
     bl_idname = "wm.save_incremental"
     bl_label = "Save Incremental"
+    bl_description = "Save incremental file revision"
 
     def execute(self, context):
         if bpy.data.filepath:
@@ -159,6 +160,10 @@ def draw_override(self, context):
     layout.operator("wm.quit_blender", text="Quit", icon='QUIT')
 
 
+def draw_into_file_menu(self,context):
+    self.layout.operator('wm.save_incremental', icon='FILE_TICK')
+
+
 @persistent
 def override_on_load(dummy):
     bpy.types.TOPBAR_MT_file.draw = draw_override
@@ -166,12 +171,13 @@ def override_on_load(dummy):
 
 def register():
     bpy.utils.register_class(FileIncrementalSave)
-    bpy.app.handlers.load_post.append(override_on_load)
-
+    bpy.types.TOPBAR_MT_file.prepend(draw_into_file_menu)
+    #bpy.app.handlers.load_post.append(override_on_load)
 
 def unregister():
     bpy.utils.unregister_class(FileIncrementalSave)
-    bpy.app.handlers.load_post.remove(override_on_load)
+    bpy.types.TOPBAR_MT_file.remove(draw_into_file_menu)
+    #bpy.app.handlers.load_post.remove(override_on_load)
 
 
 if __name__ == "__main__":
