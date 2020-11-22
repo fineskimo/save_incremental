@@ -60,7 +60,7 @@ class FileIncrementalSave(bpy.types.Operator):
             f_path = bpy.data.filepath
             directory = os.path.dirname(f_path)
 
-            increment_files = [file for file in os.listdir(os.path.dirname(f_path)) if os.path.basename(f_path).split('.blend')[0] in file.split('.blend')[0] and file.split('.blend')[0] != os.path.basename(f_path).split('.blend')[0]]
+            increment_files = [file for file in os.listdir(os.path.dirname(f_path)) if os.path.basename(f_path).split('.blend')[0] in file.split('.blend')[0] and file.split('.blend')[0] != os.path.basename(f_path).split('.blend')[0] and file.endswith(".blend")]
             for file in increment_files:
                 if not detect_number(file):
                     increment_files.remove(file)
